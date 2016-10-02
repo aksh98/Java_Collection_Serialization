@@ -1,6 +1,6 @@
 public abstract class Media implements Comparable, Serializable
 {
-
+	
 }
 
 class Movie extends Media
