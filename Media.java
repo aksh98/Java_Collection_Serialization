@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 import java.io.Serializable;
 
-public abstract class Media implements Serializable,Comparable<Object>{
+public static abstract class Media implements Serializable,Comparable<Object>{
 	private static final long serialVersionUID = -524853310152172952L;
 	protected String title;
 	protected String artist;
@@ -22,9 +21,15 @@ public abstract class Media implements Serializable,Comparable<Object>{
 		this.duration = "0:00";
 	}
 //Setter-------------------------------------------------------------------------------
+	void setTitle(String title){ this.title = title;}
+	void setArtist(String Artist){this.artist = Artist;}
+	void setYear(Integer year){thisyearOfRelease = year;}
+	void setGenre(String genre){this.genre = genre;}
+	void setSize(Integer size){this.size = size;}
+	void setDuration(String dur){this.duration = dur;}
 	void setRating(Integer newRating){
 		System.out.println("Rating of "+this.title+" updated from "+this.rating+" to "+ newRating);
-		this.rating = (int)newRating;}
+		this.rating = newRating;}
 // Getter------------------------------------------------------------------------------------------
 	String getTitle(){ return this.title; }
 	String getArtist(){ return this.artist; }
@@ -52,25 +57,12 @@ public abstract class Media implements Serializable,Comparable<Object>{
 
 class Movie extends Media{
 	private static final long serialVersionUID = -643119179113208576L;
-	
-}
-class Song extends Media{
-	private static final long serialVersionUID = -675961048978951030L;
-	String movieName;
-	String getMovieName() { return this.movieName; }
-		
-	public String toString()
-=======
-public abstract class Media implements Comparable, Serializable
-{
-
-}
-
-class Movie extends Media
-{
 	private String director;
 	private String producer;
 	private String certification;
+	void setDirector(String dir){ this.director = dir;}
+	void setProducer(String prod){this.producer = prod;}
+	void setCertification(String Cert){this.certification= Cert;}
 	String getDirector() { return this.director; }
 	String getProducer() { return this.producer; }
 	String getCertification() {return this.certification; }
@@ -82,22 +74,17 @@ class Movie extends Media
 		return res;
 	}
 }
-
-class Song extends Media
-{
+class Song extends Media{
+	private static final long serialVersionUID = -675961048978951030L;
 	private String movieName;
 	String getMovieName() { return this.movieName; }
-	String toString()
->>>>>>> 4ccc39351c49b4fbeedae1aaf05265ff911cc174
+	void setMovieName(String mName){this.movieName = mName;}
+	public String toString()
 	{
 		String res = this.title;
 		res += this.movieName;
 		res += super.toString();
-<<<<<<< HEAD
 		return res;
 	}
 	
-=======
-	}
->>>>>>> 4ccc39351c49b4fbeedae1aaf05265ff911cc174
 }
