@@ -3,21 +3,23 @@ import java.io.*;
 
 public class MediaSystem
 {	
-	List<Movie> Movies = new ArrayList<Movie>();
-	List<Song> Songs = new ArrayList<Song>();
+	Set<Movie> Movies = new HashSet<Movie>();
+	Set<Song> Songs = new HashSet<Song>();
+	HashMap<String, String> hm = new HashMap<String, String>();
+	
 	int numSongs,numMovies;
 	public MediaSystem()
 	{
 		numSongs = 0;
 		numMovies = 0;
 	}
-	void topKSongs()
+//------------------------------------------------------------------	
+	void topKSongs(int k)
 	{
-		HashMap<String, String> hm = new HashMap<String, String>();
-		for(Song i: this.Songs)
+		Set sorted = new TreeSet<Song>(Songs);
+		int j = sorted.size()-k;
+		for(int i=sorted.size();i>j;i--)
 		{
-			i = DeserializeSong();
-			hm.put(i.genre, i.title);
 		}
 	}
 //-------------------------------------------------------------
@@ -51,7 +53,9 @@ public class MediaSystem
 		int count=0;
 		for(Song i : this.Songs)
 		{
-			SerializeSong(i);count++;
+			SerializeSong(i);
+			this.hm.put(i.genre,i.title);
+			count++;
 		}
 		this.numSongs = count;
 	
