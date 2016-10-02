@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.io.Serializable;
 
 public abstract class Media implements Serializable,Comparable<Object>{
@@ -59,11 +60,44 @@ class Song extends Media{
 	String getMovieName() { return this.movieName; }
 		
 	public String toString()
+=======
+public abstract class Media implements Comparable, Serializable
+{
+
+}
+
+class Movie extends Media
+{
+	private String director;
+	private String producer;
+	private String certification;
+	String getDirector() { return this.director; }
+	String getProducer() { return this.producer; }
+	String getCertification() {return this.certification; }
+	String toString()
+	{
+		String res = this.title;
+		res += super.toString();
+		res = res +  this.director + "," + this.producer + "," + this.certification;
+		return res;
+	}
+}
+
+class Song extends Media
+{
+	private String movieName;
+	String getMovieName() { return this.movieName; }
+	String toString()
+>>>>>>> 4ccc39351c49b4fbeedae1aaf05265ff911cc174
 	{
 		String res = this.title;
 		res += this.movieName;
 		res += super.toString();
+<<<<<<< HEAD
 		return res;
 	}
 	
+=======
+	}
+>>>>>>> 4ccc39351c49b4fbeedae1aaf05265ff911cc174
 }
