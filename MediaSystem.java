@@ -5,7 +5,7 @@ public class MediaSystem
 {	
 	Set<Movie> Movies = new HashSet<Movie>();
 	Set<Song> Songs = new HashSet<Song>();
-	HashMap<String, String> hm = new HashMap<String, String>();
+	HashMap<String, List<String> > hm = new HashMap<String, List<String> >();
 	
 	int numSongs,numMovies;
 	public MediaSystem()
@@ -92,6 +92,19 @@ public class MediaSystem
 		}
 		
 		return song;
+	}
+//---------------------------------------------------------
+	public void Add_Song(Song S)
+	{
+		String name = S.getTitle();
+		String songGenre = S.getGenre();
+		List<String> values = hm.get(songGenre);
+		if(values == null)
+		{
+			values = new ArrayList<String>();
+			hm.put(songGenre, values);
+		}
+		values.add(name);
 	}
 //---------------------------------------------------------
 	public static void main(String[] args)
