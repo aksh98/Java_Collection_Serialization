@@ -66,7 +66,7 @@ class Movie extends Media{
 	String getDirector() { return this.director; }
 	String getProducer() { return this.producer; }
 	String getCertification() {return this.certification; }
-	String toString()
+	public String toString()
 	{
 		String res = this.title;
 		res += super.toString();

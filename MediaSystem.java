@@ -46,57 +46,74 @@ public class MediaSystem
 			}
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("EXCEPTION THROWN !!");return;
 		}
 		finally{
-			try{if(br!=null) br.close();}catch(Exception e){e.printStackTrace();}}
-		int count=0;
-		for(Song i : this.Songs)
-		{
-			SerializeSong(i);
-			this.hm.put(i.genre,i.title);
+			try{if(br!=null) br.close();}catch(Exception e){System.out.println("Exception thrown");return;}}
+			SerializeSong(Songs);
 			count++;
 		}
 		this.numSongs = count;
-	
 	}
 //--------------------------------------------------------------
-	public void SerializeSong(Object song)
+	public void SerializeSong(Set<Song> Songs,String filename)
 	{
 		try
 		{
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("song.dat"));
-			out.writeObject(song);
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));
+			out.writeObject(Songs);
 			out.flush();
 			out.close();
-		}catch(Exception e)
+		}catch(IOException e)
 		{
-			e.printStackTrace();
+			System.out.println("IOEXCEPTION THROWN !! ");
+			return;
 		}	
 	}
 //------------------------------------------------------------
-	public Song DeserializeSong()
+	public Set<Song> DeserializeSong()
 	{
-		Song song = null;
+		Set<Song> song = null;
 		try
 		{
 			FileInputStream inp = new FileInputStream("song.dat");
 			ObjectInputStream in = new ObjectInputStream(inp);
-			song = (Song)in.readObject();
+			song = in.readObject();
 			in.close();inp.close();
 			
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("EXCEPTION THROWN")
+			return;
 		}
 		
 		return song;
 	}
-//---------------------------------------------------------
+	//------------------------------------------------------------
+	public Set<Movie> DeserializeMovie()
+	{
+		Set<Movie> M = null;
+		try
+		{
+			FileInputStream inp = new FileInputStream("movie.dat");
+			ObjectInputStream in = new ObjectInputStream(inp);
+			M = in.readObject();
+			in.close();inp.close();				
+		}
+		catch(Exception e)
+		{
+			System.out.println("EXCEPTION THROWN")
+			return;
+		}
+		
+		return M;
+	}
+	//---------------------------------------------------------
 	public static void main(String[] args)
 	{
 	
 	}
 
 }
+
