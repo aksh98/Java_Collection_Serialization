@@ -7,7 +7,9 @@ public class MediaSystem
 	Set<Song> Songs = new HashSet<Song>();
 	HashMap<String, List<String> > hm_songs = new HashMap<String, List<String> >();
 	HashMap<String, List<String> > hm_movies = new HashMap<String, List<String> >();
+	HashMap<String, List<String> > movie_song = new HashMap<String, List<String> >();
 	int numSongs,numMovies;
+
 	public MediaSystem()
 	{
 		numSongs = 0;
@@ -51,6 +53,7 @@ public class MediaSystem
 			System.out.println("There were only " + count + " movies in library !");
 		}
 	}
+
 //-------------------------------------------------------------
 	public void SerializeData()
 	{
@@ -63,31 +66,32 @@ public class MediaSystem
 			{
 				Song song = new Song();
 				List<String> asong = Arrays.asList(CurrentLine.split(","));
-				song.title = asong.get(0);
-				song.movieName = asong.get(1);
-				song.artist = asong.get(2);
-				song.yearOfRelease = Integer.valueOf(asong.get(3));
-				song.genre = asong.get(4);
-				song.size = Integer.valueOf(asong.get(5));
-				song.rating = Integer.valueOf(asong.get(6));
-				song.duration = asong.get(7);
+				song.setTitle(asong.get(0));
+				song.setMovieName(asong.get(1));
+				song.setArtist(asong.get(2));
+				song.setYear(Integer.valueOf(asong.get(3)));
+				song.setGenre(asong.get(4));
+				song.setSize(Integer.valueOf(asong.get(5)));
+				song.setRating(Integer.valueOf(asong.get(6)));
+				song.setDuration(asong.get(7));
 				Songs.add(song);
 			}
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("EXCEPTION THROWN !!");return;
 		}
 		finally{
-			try{if(br!=null) br.close();}catch(Exception e){e.printStackTrace();}}
+		try{if(br!=null) br.close();}catch(Exception e){System.out.println("Exception thrown");return;}}
+		SerializeSong(Songs);
 		int count=0;
 		for(Song i : this.Songs)
 		{
-			SerializeSong(i);
 			this.genreSort(i);
+			this.SortByMovieName(i);
 			count++;
 		}
 		this.numSongs = count;
-		
+
 		try
 		{ 
 			String CurrentLine;
@@ -96,66 +100,101 @@ public class MediaSystem
 			{
 				Movie movie = new Movie();
 				List<String> amovie = Arrays.asList(CurrentLine.split(","));
-				movie.title = amovie.get(0);
-				movie.artist = amovie.get(1);
-				movie.yearOfRelease = Integer.valueOf(amovie.get(2));
-				movie.genre = amovie.get(3);
-				movie.size = Integer.valueOf(amovie.get(4));
-				movie.rating = Integer.valueOf(amovie.get(5));
-				movie.duration = amovie.get(6);
-				movie.director = amovie.get(7);
-				movie.producer = amovie.get(8);
-				movie.certification = amovie.get(9);
+				movie.setTitle(amovie.get(0));
+				movie.setArtist(amovie.get(1));
+				movie.setYear(Integer.valueOf(amovie.get(2)));
+				movie.setGenre(amovie.get(3));
+				movie.setSize(Integer.valueOf(amovie.get(4)));
+				movie.setRating(Integer.valueOf(amovie.get(5)));
+				movie.setDuration(amovie.get(6));
+				movie.setDirector(amovie.get(7));
+				movie.setProducer(amovie.get(8));
+				movie.setCertification(amovie.get(9));
 				Movies.add(movie);
 			}
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("Exception thrown!");
 		}
 		finally{
-			try{if(br!=null) br.close();}catch(Exception e){e.printStackTrace();}}
+			try{if(br!=null) br.close();}catch(Exception e){System.out.println("Exception thrown!");}}
 		count=0;
+		SerializeMovie(this.Movies);
 		for(Movie i : this.Movies)
 		{
-			SerializeSong(i);
 			this.sortDirector(i);
 			count++;
 		}
-		this.numSongs = count;
-		
+		this.numMovies = count;
 	}
 //--------------------------------------------------------------
-	public void SerializeSong(Object song)
+	public void SerializeSong(Set<Song> Songs)
 	{
 		try
 		{
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("song.dat"));
-			out.writeObject(song);
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("song.txt"));
+			out.writeObject(Songs);
 			out.flush();
 			out.close();
-		}catch(Exception e)
+		}catch(IOException e)
 		{
-			e.printStackTrace();
+			System.out.println("IOEXCEPTION THROWN !! ");
+			return;
+		}	
+	}
+//--------------------------------------------------------------
+	public void SerializeMovie(Set<Movie> Movies)
+	{
+		try
+		{
+			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("movie.txt"));
+			out.writeObject(Movies);
+			out.flush();
+			out.close();
+		}catch(IOException e)
+		{
+			System.out.println("IOEXCEPTION THROWN !! ");
+			return;
 		}	
 	}
 //------------------------------------------------------------
-	public Song DeserializeSong()
+	public Set<Song> DeserializeSong()
 	{
-		Song song = null;
+		Set<Song> song = null;
 		try
 		{
 			FileInputStream inp = new FileInputStream("song.dat");
 			ObjectInputStream in = new ObjectInputStream(inp);
-			song = (Song)in.readObject();
+			song = (Set<Song>)in.readObject();
 			in.close();inp.close();
 			
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("EXCEPTION THROWN");
+			return null;
 		}
 		
 		return song;
+	}
+//---------------------------------------------------------
+	public Set<Movie> DeserializeMovie()
+	{
+		Set<Movie> M = null;
+		try
+		{
+			FileInputStream inp = new FileInputStream("movie.dat");
+			ObjectInputStream in = new ObjectInputStream(inp);
+			M = (Set<Movie>)in.readObject();
+			in.close();inp.close();				
+		}
+		catch(Exception e)
+		{
+			System.out.println("EXCEPTION THROWN");
+			return null;
+		}
+		
+		return M;
 	}
 //---------------------------------------------------------
 	public void genreSort(Song S)
@@ -184,9 +223,34 @@ public class MediaSystem
 		values.add(name);
 	}
 //---------------------------------------------------------
+	public void SortByMovieName(Song S)
+	{
+		String name = S.getTitle();
+		String movieName = S.getMovieName();
+		List<String> values = movie_song.get(movieName);
+		if(values == null)
+		{
+			values = new ArrayList<String>();
+			movie_song.put(movieName,values);
+		}
+		values.add(name);
+	}
+//---------------------------------------------------------
 	public static void main(String[] args)
 	{
-	
+		MediaSystem ms = new MediaSystem();
+		ms.SerializeData();
+		ms.Songs = ms.DeserializeSong();
+		ms.Movies = ms.DeserializeMovie();
+		for(Song i : ms.Songs)
+		{
+			System.out.println(i);
+		}
+		for(Movie i : ms.Movies)
+		{
+			System.out.println(i);
+		}
 	}
 
 }
+
