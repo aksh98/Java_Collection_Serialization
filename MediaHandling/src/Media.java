@@ -21,9 +21,16 @@ public abstract class Media implements Serializable,Comparable<Object>{
 		this.duration = "0:00";
 	}
 //Setter-------------------------------------------------------------------------------
+	void setTitle(String title){ this.title = title;}
+	void setArtist(String Artist){this.artist = Artist;}
+	void setYear(Integer year){this.yearOfRelease = year;}
+	void setGenre(String genre){this.genre = genre;}
+	void setSize(Integer size){this.size = size;}
+	void setDuration(String dur){this.duration = dur;}
 	void setRating(Integer newRating){
 		System.out.println("Rating of "+this.title+" updated from "+this.rating+" to "+ newRating);
-		this.rating = (int)newRating;}
+		this.rating = newRating;}
+
 // Getter------------------------------------------------------------------------------------------
 	String getTitle(){ return this.title; }
 	String getArtist(){ return this.artist; }

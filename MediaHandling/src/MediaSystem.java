@@ -17,10 +17,6 @@ public class MediaSystem
 	void topKSongs(int k)
 	{
 		Set<Song> sorted = new TreeSet<Song>(Songs);
-//		int j = sorted.size()-k;
-//		for(int i=sorted.size();i>j;i--)
-//		{
-//		}
 		Iterator<Song> i = sorted.iterator();
 		int count = 1;
 		Song S;
