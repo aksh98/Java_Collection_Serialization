@@ -42,7 +42,7 @@ public abstract class Media implements Serializable,Comparable<Object>{
 	
 //@Override-----------------------------------------------------------------
 	public int compareTo(Object other) {
-		return -this.rating.compareTo(((Media)other).getRating());
+		return -1 * this.rating.compareTo(((Media)other).getRating());
 	}
 	
 //toString-----------------------------------------------------------------------
@@ -61,9 +61,9 @@ class Movie extends Media
 {
 
 	private static final long serialVersionUID = -474249871394376952L;
-	private String director;
-	private String producer;
-	private String certification;
+	protected String director;
+	protected String producer;
+	protected String certification;
 	String getDirector() { return this.director; }
 	String getProducer() { return this.producer; }
 	String getCertification() {return this.certification; }
